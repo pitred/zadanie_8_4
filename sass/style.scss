@@ -2,3 +2,28 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.container {
+    max-width: 1000px;
+    width: 1000px;
+    text-align: center;
+}
+
+#rock,
+#paper,
+#scissors {
+    padding: 20px;
+    display: inline-block;
+    width: 150px;
+    height: 80px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    background-color: green;
+    border: 2px solid red;
+    font-size: 20px;
+    color: aqua;
+    line-height: 40px;
+}
