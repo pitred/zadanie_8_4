@@ -30,7 +30,6 @@ function endOfTheGame() {
         outputNrRounds.innerHTML = 'COMPUTER WIN ENTIRE GAME';
     }
 }
-console.log(endOfTheGame());
 
 // function that selects random number from 1 to 3
 function computerMove() {
