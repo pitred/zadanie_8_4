@@ -6,6 +6,7 @@ var newGameBtn = document.getElementById("new-game");
 var outputWinStatus = document.getElementById("output");
 var outputPoints = document.getElementById("result");
 var outputNrRounds = document.getElementById("rounds-to-win");
+var gameOver = document.getElementById('game-over');
 var won = 0;
 var lost = 0;
 var conditionToWin;
@@ -32,6 +33,31 @@ function endOfTheGame(conditionToWin, won, lost) {
     }
 }
 
+// function that blocks butons
+function blockBtn() {
+    if (conditionToWin === won || conditionToWin === lost) {
+        newGameBtn.disabled = false;
+        rockBtn.disabled = true;
+        paperBtn.disabled = true;
+        scissorsBtn.disabled = true;
+        gameOver.innerHTML = 'Game over, please press the new game button !';
+    } else {
+        newGameBtn.disabled = true;
+    }
+}
+
+// function that starts new game
+function newGame() {
+    won = 0;
+    lost = 0;
+    rockBtn.disabled = false;
+    paperBtn.disabled = false;
+    scissorsBtn.disabled = false;
+    newGameBtn.addEventListener('click', function () {
+        location.reload();
+    });
+}
+
 // function that selects random number from 1 to 3
 function computerMove() {
     var randomNumber = Math.ceil(Math.random() * 3);
@@ -44,6 +70,7 @@ function computerMove() {
 function playerMove(playerChoice) {
     var computerChoice = computerMove();
     outputResult(computerChoice, playerChoice);
+    blockBtn();
 }
 
 // function that shows output results
@@ -64,6 +91,7 @@ function outputResult(computerChoice, playerChoice) {
 // react at the press of a button new game
 newGameBtn.addEventListener("click", function () {
     askForRounds();
+    newGame();
 });
 
 // reaction at the press of a button rock

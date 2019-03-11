@@ -46,6 +46,13 @@ body {
     font-size: $pdd20;
 }
 
+#game-over {
+    padding: $pdd20;
+    font-size: $pdd40;
+    font-weight: bold;
+    color: $red;
+}
+
 #new-game {
     display: block;
     margin: 0 auto;
