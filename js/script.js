@@ -1,4 +1,4 @@
-//Variables
+// Variables
 var rockBtn = document.getElementById("rock");
 var paperBtn = document.getElementById("paper");
 var scissorsBtn = document.getElementById("scissors");
@@ -6,10 +6,12 @@ var newGameBtn = document.getElementById("new-game");
 var outputWinStatus = document.getElementById("output");
 var outputPoints = document.getElementById("result");
 var outputNrRounds = document.getElementById("rounds-to-win");
-var gameOver = document.getElementById('game-over');
+var modal = document.querySelector('.modal');
+var modalBody = document.querySelector('.modal__body');
 var won = 0;
 var lost = 0;
 var conditionToWin;
+var progres = [];
 
 
 // function that ask for number of rounds
@@ -24,12 +26,50 @@ function askForRounds() {
     }
 }
 
+// function that generates sumary table
+function generateTable() {
+    var table = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Nr</th>
+                    <th>Player choice</th>
+                    <th>Computer choice</th>
+                    <th>Won</th>
+                    <th>Lost</th>
+                </tr>
+            </thead>
+            <tbody>`
+
+    progres.forEach(function (item, index) {
+        table += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${item.playerChoice}</td>
+                <td>${item.computerChoice}</td>
+                <td>${item.won}</td>
+                <td>${item.lost}</td>
+            </tr>
+        `
+    })
+
+    table += `
+            </tbody>
+        </table>
+    `
+    modalBody.innerHTML += table;
+}
+
 // function that ends game
 function endOfTheGame(conditionToWin, won, lost) {
     if (conditionToWin === won) {
-        outputNrRounds.innerHTML = "<strong>YOU WIN ENTIRE GAME</strong>";
+        modalBody.innerHTML = "<strong>YOU WIN ENTIRE GAME</strong><br><br><a href='#' class='close'>x</a>";
+        modal.classList.add('show');
+        generateTable();
     } else if (conditionToWin === lost) {
-        outputNrRounds.innerHTML = "<strong>COMPUTER WIN ENTIRE GAME</strong>";
+        modalBody.innerHTML = "<strong>COMPUTER WIN ENTIRE GAME</strong><br><br><a href='#' class='close'>x</a>";
+        modal.classList.add('show');
+        generateTable();
     }
 }
 
@@ -40,7 +80,6 @@ function blockBtn() {
         rockBtn.disabled = true;
         paperBtn.disabled = true;
         scissorsBtn.disabled = true;
-        gameOver.innerHTML = 'Game over, please press the new game button !';
     } else {
         newGameBtn.disabled = true;
     }
@@ -53,9 +92,8 @@ function newGame() {
     rockBtn.disabled = false;
     paperBtn.disabled = false;
     scissorsBtn.disabled = false;
-    newGameBtn.addEventListener('click', function () {
-        location.reload();
-    });
+    progres = [];
+    conditionToWin = '';
 }
 
 // function that selects random number from 1 to 3
@@ -84,14 +122,22 @@ function outputResult(computerChoice, playerChoice) {
         outputWinStatus.innerHTML = "<br>YOU LOST: you played a " + playerChoice + ", computer played " + computerChoice;
         lost += 1;
     }
+
+    progres.push({
+        playerChoice,
+        computerChoice,
+        won,
+        lost
+    });
+
     outputPoints.innerHTML = "PLAYER &nbsp" + won + " - " + lost + "&nbsp COMPUTER";
     endOfTheGame(conditionToWin, won, lost);
 }
 
 // react at the press of a button new game
 newGameBtn.addEventListener("click", function () {
-    askForRounds();
     newGame();
+    askForRounds();
 });
 
 // reaction at the press of a button rock
@@ -108,3 +154,14 @@ paperBtn.addEventListener("click", function () {
 scissorsBtn.addEventListener("click", function () {
     playerMove("SCISSORS");
 });
+
+// function that hide modal
+var hideModal = function (e) {
+    e.preventDefault();
+    document.querySelector('.modal').classList.remove('show');
+};
+var closeButtons = document.querySelectorAll('.modal .close');
+for (var i = 0; i < closeButtons.length; i++) {
+    closeButtons[i].addEventListener('click', hideModal);
+}
+document.querySelector('.modal').addEventListener('click', hideModal);
